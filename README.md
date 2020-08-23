@@ -8,4 +8,4 @@ change config.php file if db settings are different and in home.php file in the 
 
 Authorize as admin:\
 login: admin\
-password:123\
+password:123
