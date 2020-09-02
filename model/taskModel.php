@@ -32,7 +32,7 @@
 			{	
 				$this->open_db();
 				$query=$this->condb->prepare("INSERT INTO tasks (username,email,task_text, checked) VALUES (?, ?, ?, ?)");
-				$query->bind_param("ssss",$obj->username,$obj->email, $obj->task_text, $obj->checked);
+				$query->bind_param("sssi",$obj->username,$obj->email, $obj->task_text, $obj->checked);
 				$query->execute();
 				$res= $query->get_result();
 				$last_id=$this->condb->insert_id;
@@ -53,7 +53,7 @@
 			{	
 				$this->open_db();
 				$query=$this->condb->prepare("UPDATE tasks SET username=?,email=?,task_text=?,checked=?  WHERE id=?");
-				$query->bind_param("ssssi", $obj->username,$obj->email, $obj->task_text,$obj->checked, $obj->id);
+				$query->bind_param("sssii", $obj->username,$obj->email, $obj->task_text,$obj->checked, $obj->id);
 				$query->execute();
 				$res=$query->get_result();						
 				$query->close();

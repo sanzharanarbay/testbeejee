@@ -43,7 +43,7 @@
             // Validate username        
             if(empty($task->username)){
                 $task->username_msg = "Field is empty.";$noerror=false;
-            } elseif(!filter_var($task->username, FILTER_VALIDATE_REGEXP, array("options"=>array("regexp"=>"/^[a-zA-Z\s]+$/")))){
+            } elseif(!filter_var($task->username, FILTER_VALIDATE_REGEXP, array("options"=>array("regexp"=>"/^[a-zA-Z-0-9\s]+$/")))){
                 $task->username_msg = "Invalid entry.";$noerror=false;
             }else{$task->username_msg ="";}            
             // Validate email            
@@ -55,7 +55,7 @@
             // Validate task_text
             if(empty($task->task_text)){
                 $task->task_text_msg = "Field is empty.";$noerror=false;
-            } elseif(!filter_var($task->task_text, FILTER_VALIDATE_REGEXP, array("options"=>array("regexp"=>"/^[a-zA-Z\s]+$/")))){
+            } elseif(!filter_var($task->task_text, FILTER_VALIDATE_REGEXP, array("options"=>array("regexp"=>"/^[a-zA-Z-0-9\s]+$/")))){
                 $task->task_text_msg = "Invalid entry.";$noerror=false;
             }else{$task->task_text_msg ="";} 
             return $noerror;
