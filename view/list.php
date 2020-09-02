@@ -1,4 +1,30 @@
-<?php session_unset();?>
+<?php session_unset();
+$servername='localhost';
+$username='root';
+$password='';
+$dbname = "beejeetest";
+$conn=mysqli_connect($servername,$username,$password,"$dbname");
+if(!$conn){
+die('Could not Connect My Sql:' .mysql_error());
+}
+$limit = 3;  
+if (isset($_GET["page"])) {
+    $page  = $_GET["page"]; 
+    } 
+    else{ 
+    $page=1;
+    };
+
+if (isset($_GET["orderBy"])) {
+    $orderBy = $_GET["orderBy"]; 
+    } 
+    else{ 
+    $orderBy='id';
+    };  
+
+$start_from = ($page-1) * $limit;  
+$result = mysqli_query($conn,"SELECT * FROM tasks ORDER BY $orderBy ASC LIMIT $start_from, $limit");
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -38,6 +64,22 @@
                         <h2 class="pull-left">Tasks</h2>
                         <a href="view/insert.php" class="btn btn-danger pull-right">Add Task</a>
                     </div>
+                    <div class="form-group row">
+                        <div class="col-md-6">
+                            <h4>Сортировать ПО:</h4>
+                        </div>
+                         <div class="col-md-6">
+                            <input type="hidden" id="page" value="<?php echo $page; ?>">
+                            <form action="?" method="GET" onchange="sort()">
+                            <select name="orderBy" id="my_select" class="form-control">
+                            <option value="id">Выберите сортировку по</option>
+                            <option value="username">Имя пользователя</option>
+                            <option value="email">Email</option>
+                            <option value="checked">Статус</option>
+                        </select>
+                    </form>
+                        </div>
+                                        </div>
                     <?php
                         if($result->num_rows > 0){
                             echo "<table class='table table-bordered table-striped'>";
@@ -79,8 +121,29 @@
                         }
                     ?>
                 </div>
+                <?php  
+
+                $result_db = mysqli_query($conn,"SELECT COUNT(id) FROM tasks"); 
+                $row_db = mysqli_fetch_row($result_db);  
+                $total_records = $row_db[0];  
+                $total_pages = ceil($total_records / $limit); 
+                /* echo  $total_pages; */
+                $pagLink = "<ul class='pagination'>";  
+                for ($i=1; $i<=$total_pages; $i++) {
+                              $pagLink .= "<li class='page-item'><a class='page-link' href='index.php?page=".$i."'>".$i."</a></li>";   
+                }
+                echo $pagLink . "</ul>";  
+                ?>
             </div>        
         </div>
     </div>
+
+   <script type="text/javascript">
+  function sort(option){
+     var option = $('#my_select').val();
+     var page = $('#page').val();
+   window.location = window.location.pathname+'?page='+page+'&orderBy='+option;
+}
+</script>
 </body>
 </html>
